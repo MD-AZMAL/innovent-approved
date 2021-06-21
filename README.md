@@ -1,2 +1,2 @@
 # innovent-approved
-Prototype for the given problem statement
+Social media content approval system
