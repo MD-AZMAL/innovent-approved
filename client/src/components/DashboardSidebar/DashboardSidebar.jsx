@@ -8,22 +8,22 @@ const DashboardSidebar = () => {
     {
       title: "Item 1",
       icon: <FaIcons.FaAccusoft />,
-      path: '/',
+      path: "/",
     },
     {
       title: "Item 2",
       icon: <FaIcons.FaIgloo />,
-      path: '/',
+      path: "/",
     },
     {
       title: "Item 3",
       icon: <FaIcons.FaInbox />,
-      path: '/',
+      path: "/",
     },
     {
       title: "Item 4",
       icon: <FaIcons.FaInvision />,
-      path: '/',
+      path: "/",
     },
   ];
 
@@ -32,8 +32,13 @@ const DashboardSidebar = () => {
   return (
     <div className="dashboard-sidebar">
       <div className="dashboard-sidebar--wrapper">
-        {items.map((item, index) =>(
-          <DashboardItem key={index} item={item} isActive={active === item.title} setActive={setActive}/>
+        {items.map((item, index) => (
+          <DashboardItem
+            key={index}
+            item={item}
+            isActive={active === item.title}
+            setActive={setActive}
+          />
         ))}
       </div>
     </div>
