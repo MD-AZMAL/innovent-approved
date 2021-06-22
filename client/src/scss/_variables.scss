@@ -1,0 +1,34 @@
+// Typography
+$primary-font: "Inter", sans-serif;
+
+$regular: 400;
+$semiBold: 600;
+$bold: 700;
+$extraBold: 800;
+
+// Colors
+$color-major: #2a3759;
+$color-minor: #828a9f;
+
+$color-accent-success: #4d8b31;
+$color-accent-danger: #da2c38;
+$color-accent-warning: #fbaf00;
+
+$color-dark: #130101;
+$color-grey: #707070;
+$color-white: #ffffff;
+
+$custom-colors: () !default;
+$custom-colors: map-merge(
+  (
+    "color-major": $color-major,
+    "color-minor": $color-minor,
+    "color-accent-success": $color-accent-success,
+    "color-accent-danger": $color-accent-danger,
+    "color-accent-warning": $color-accent-warning,
+    "color-dark": $color-dark,
+    "color-white": $color-white,   
+    "color-grey": $color-grey,
+  ),
+  $custom-colors
+);

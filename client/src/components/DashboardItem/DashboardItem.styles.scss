@@ -1,0 +1,34 @@
+@import "../../scss/variables";
+
+.dashboard-item {
+  width: 100%;
+  height: 60px;
+  color: $color-white;
+  display: flex;
+  align-items: center;
+  border-left: 4px solid transparent;
+  padding: 1rem;
+  transition: .2s all ease;
+
+  &--icon {
+    font-size: 1.5rem;
+  }
+
+  &--label {
+    margin-left: 1.5rem;
+  }
+
+  &--active {
+    color: $color-white;
+    text-decoration: none;
+    background: $color-minor;
+    border-left: 4px solid $color-accent-warning;
+  }
+
+  &:hover {
+    color: $color-white;
+    text-decoration: none;
+    background: $color-minor;
+    border-left: 4px solid $color-accent-warning;
+  }
+}

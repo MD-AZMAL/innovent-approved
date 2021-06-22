@@ -1,0 +1,19 @@
+@import "../../scss/variables";
+
+.dashboard-sidebar {
+  background: $color-major;
+  width: 20%;
+  height: 100vh;
+  min-height: 200px;
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+  position: sticky;
+  top: 0;
+  left: 0;
+
+  &--wrapper {
+      width: 100%;
+  }
+
+}

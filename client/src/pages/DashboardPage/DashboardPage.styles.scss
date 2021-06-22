@@ -1,0 +1,13 @@
+#dashboard {
+  height: 100%;
+  display: flex;
+
+  &-content {
+    padding: 2rem;
+    width: 100%;
+  }
+
+  &-main {
+    width: 100%;
+  }
+}
