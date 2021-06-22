@@ -18,13 +18,7 @@ const checkClientParams = (req, res, next) => {
       if (!req.body.role) missing.push("role");
       break;
     case routeNames.addPost:
-      if (!req.body.link) missing.push("link");
-      break;
-    case routeNames.addAreaAdmin:
-      if (!req.body.idNo) missing.push("idNo");
-      break;
-    case routeNames.approvePost:
-      if (!req.body.level) missing.push("level");
+      if (!req.body.postLink) missing.push("post link");
       break;
     default:
       break;
