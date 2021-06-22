@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const urlMetadata = require("url-metadata");
 const User = require("../models/User");
 const Post = require("../models/Post");
 const promiseHandler = require("../utils/promiseHandler");
@@ -42,14 +43,23 @@ const addPost = async (postLink, user) => {
     };
   }
 
-  // add post
+  // Get metadata from link
+
+  const [meta, errorMeta] = await promiseHandler(urlMetadata(postLink));
+
+  if (errorMeta) {
+    console.log(errorMeta);
+  }
 
   //   fill postData
   const postData = {
     url: postLink,
-    title: "Test",
-    description: "test",
-    images: [],
+    title: meta.title ? meta.title : "Unavailable",
+    description: meta.description
+      ? meta.description
+      : "Lorem ipsum dolor sit amet",
+    image: meta.image ? meta.image : null,
+    source: meta.source ? meta.source : "Unavailable",
     status: 0,
   };
 
