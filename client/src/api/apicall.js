@@ -63,7 +63,7 @@ export const signupApi = async ({
   return [error, data];
 };
 
-export const getPostsApi = async (token, all = false) => {
+export const getPostsApi = async (token) => {
   let data;
   let error;
 
@@ -71,9 +71,6 @@ export const getPostsApi = async (token, all = false) => {
     ...endpoints.getPosts,
     headers: {
       Authorization: "Bearer " + token,
-    },
-    params: {
-      all: all,
     },
   };
 
@@ -136,25 +133,30 @@ export const addPostApi = async (token, postLink) => {
   return [error, data];
 };
 
-export const approvePostApi = async (token, postId) => {
-    let data;
-    let error;
-  
-    const requestObject = {
-      ...endpoints.approvePost,
-      url: endpoints.approvePost.url.replace(":postId", postId),
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    };
-  
-    try {
-      const result = await axios(requestObject);
-      data = result.data;
-    } catch (err) {
-      data = null;
-      error = err;
-    }
-  
-    return [error, data];
+export const verifyPostApi = async (token, postId, statusCode) => {
+  let data;
+  let error;
+
+  const requestObject = {
+    ...endpoints.verifyPost,
+    url: endpoints.verifyPost.url.replace(":postId", postId),
+    data: {
+      statusCode,
+    },
+    headers: {
+      Authorization: "Bearer " + token,
+    },
   };
+
+
+  try {
+    const result = await axios(requestObject);
+    data = result.data;
+  } catch (err) {
+
+    data = null;
+    error = err;
+  }
+
+  return [error, data];
+};

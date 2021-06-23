@@ -1,43 +1,48 @@
-import React, { useState } from "react";
+import React from "react";
+import { Badge } from "react-bootstrap";
+import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
+import { nanoid } from "nanoid";
+import { useLocation } from "react-router-dom";
 import * as FaIcons from "react-icons/fa";
+import { selectCurrentUser } from "../../redux/user/user.selectors";
 import DashboardItem from "../DashboardItem/DashboardItem";
+
 import "./DashboardSidebar.styles.scss";
 
-const DashboardSidebar = () => {
+const DashboardSidebar = ({ currentUser }) => {
+  const { pathname } = useLocation();
+
   const items = [
     {
-      title: "Item 1",
-      icon: <FaIcons.FaAccusoft />,
-      path: "/",
+      title: "Show Posts",
+      icon: <FaIcons.FaList />,
+      path: "/dashboard/posts",
     },
     {
-      title: "Item 2",
-      icon: <FaIcons.FaIgloo />,
-      path: "/",
-    },
-    {
-      title: "Item 3",
-      icon: <FaIcons.FaInbox />,
-      path: "/",
-    },
-    {
-      title: "Item 4",
-      icon: <FaIcons.FaInvision />,
-      path: "/",
+      title: "Add Post",
+      icon: <FaIcons.FaPlusSquare />,
+      path: "/dashboard/add-post",
     },
   ];
 
-  const [active, setActive] = useState(-1);
-
   return (
     <div className="dashboard-sidebar">
+      <div className="text-center py-5">
+        <h6 className="mb-0">Welcome</h6>
+        <h5>{currentUser.name}</h5>
+        {currentUser.role === "Admin" ? (
+          <Badge variant="color-minor" className="ml-2">
+            Admin
+          </Badge>
+        ) : null}
+      </div>
       <div className="dashboard-sidebar--wrapper">
-        {items.map((item, index) => (
+        {items.map((item) => (
           <DashboardItem
-            key={index}
+            key={nanoid()}
             item={item}
-            isActive={active === item.title}
-            setActive={setActive}
+            isActive={pathname.includes(item.path)}
           />
         ))}
       </div>
@@ -45,4 +50,8 @@ const DashboardSidebar = () => {
   );
 };
 
-export default DashboardSidebar;
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser,
+});
+
+export default connect(mapStateToProps)(DashboardSidebar);

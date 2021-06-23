@@ -15,7 +15,7 @@ $color-accent-danger: #da2c38;
 $color-accent-warning: #fbaf00;
 
 $color-dark: #130101;
-$color-grey: #707070;
+$color-gray: #707070;
 $color-white: #ffffff;
 
 $custom-colors: () !default;
@@ -28,7 +28,7 @@ $custom-colors: map-merge(
     "color-accent-warning": $color-accent-warning,
     "color-dark": $color-dark,
     "color-white": $color-white,   
-    "color-grey": $color-grey,
+    "color-gray": $color-gray,
   ),
   $custom-colors
 );

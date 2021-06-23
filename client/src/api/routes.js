@@ -21,9 +21,9 @@ const endpoints = {
     method: "GET",
     url: `${baseUrl}/api/v1/posts/:postId`,
   },
-  approvePost: {
+  verifyPost: {
     method: "POST",
-    url: `${baseUrl}/api/v1/posts/:postId/approve`,
+    url: `${baseUrl}/api/v1/posts/:postId/validate`,
   },
 };
 

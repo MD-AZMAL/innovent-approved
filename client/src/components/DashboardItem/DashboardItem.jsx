@@ -4,12 +4,12 @@ import { Link } from "react-router-dom";
 
 import "./DashboardItem.styles.scss";
 
-const DashboardItem = ({ item, isActive, setActive }) => {
+const DashboardItem = ({ item, isActive }) => {
 
   const dashboardClasses = classNames("dashboard-item", {"dashboard-item--active": isActive})
 
   return (
-    <Link to={item.path} className={dashboardClasses} onClick={() => {setActive(item.title)}}>
+    <Link to={item.path} className={dashboardClasses}>
         <span className="dashboard-item--icon">
             {item.icon}
         </span>

@@ -54,6 +54,7 @@ const RegisterForm = () => {
     }
   };
 
+
   return (
     <Form onSubmit={onSubmit} className="p-4 border shadow bg-white">
       <Row>

@@ -1,0 +1,27 @@
+@import "../../scss/variables";
+
+.post-card {
+  padding: 1rem;
+  border: 2px dashed rgba($color: $color-minor, $alpha: 0.5);
+
+
+  &--header {
+    display: flex;
+  }
+
+  &--right {
+    margin-left: 1rem;
+  }
+
+
+  &--badges {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  &--user {
+    border-left: 1px dashed rgba($color: $color-minor, $alpha: 0.5);
+  }
+
+  
+}
