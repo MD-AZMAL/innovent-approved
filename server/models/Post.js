@@ -6,7 +6,10 @@ const postSchema = mongoose.Schema({
     description: {type: String, required: true},
     image: {type: String, required: true},
     source: {type: String, required: true},
-    status: {type: Number, enum: [0,1,2], required: true},
+    status: {
+        levelOne: {type: Number, required: true,  enum: [0, 1, -1]},
+        levelTwo: {type: Number, required: true,  enum: [0, 1, -1]},
+    },
     requestedBy: {type: mongoose.Schema.Types.ObjectId, ref: "User" },
     levelOne: {type: mongoose.Schema.Types.ObjectId, ref: "User" },
     levelTwo: {type: mongoose.Schema.Types.ObjectId, ref: "User" },

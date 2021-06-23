@@ -7,7 +7,7 @@ const {
   getPosts,
   getPost,
   addPost,
-  approvePost,
+  validatePost,
 } = require("../controller/postsUtils");
 
 router.use(express.urlencoded({ extended: true }));
@@ -19,10 +19,9 @@ router.get(
   async (req, res) => {
     let statusCode;
     let responseObject;
-    let clientParameters = { ...req.body };
 
     try {
-      const result = await getPosts(clientParameters, req.user);
+      const result = await getPosts(req.user);
 
       statusCode = 200;
       responseObject = {
@@ -112,16 +111,17 @@ router.post(
 );
 
 router.post(
-  routeNames.approvePost,
+  routeNames.validatePost,
   checkClientParams,
   authenticateToken,
   async (req, res) => {
+
     let statusCode;
     let responseObject;
-    let id = req.params.postId;
+    let clientParameters = {...req.body, ...req.params}
 
     try {
-      const result = await approvePost(id, req.user);
+      const result = await validatePost(clientParameters, req.user);
 
       statusCode = 200;
       responseObject = {

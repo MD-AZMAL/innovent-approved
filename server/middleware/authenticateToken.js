@@ -24,7 +24,7 @@ const authenticateToken = async (req, res, next) => {
         content: { errorCode: 112, message: "Invalid Token", error: err },
       });
 
-    req.user = user;
+      req.user = user;
     next();
   });
 };

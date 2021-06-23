@@ -3,7 +3,6 @@ const routeNames = require("../utils/routeNames");
 const checkClientParams = (req, res, next) => {
   const missing = [];
   let responseObject;
-
   switch (req.route.path) {
     case routeNames.signup:
       if (!req.body.firstName) missing.push("firstName");
@@ -19,6 +18,9 @@ const checkClientParams = (req, res, next) => {
       break;
     case routeNames.addPost:
       if (!req.body.postLink) missing.push("post link");
+      break;
+    case routeNames.validatePost:
+      if (!req.body.statusCode) missing.push("status code");
       break;
     default:
       break;

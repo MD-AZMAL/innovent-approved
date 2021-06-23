@@ -4,7 +4,7 @@ const routeNames = {
     addPost: "/api/v1/posts/add",
     getPosts: '/api/v1/posts',
     getPost: '/api/v1/posts/:postId',
-    approvePost: '/api/v1/posts/:postId/approve',
+    validatePost: '/api/v1/posts/:postId/validate',
 };
 
 module.exports = routeNames;

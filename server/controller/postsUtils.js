@@ -47,8 +47,14 @@ const addPost = async (postLink, user) => {
 
   const [meta, errorMeta] = await promiseHandler(urlMetadata(postLink));
 
+
   if (errorMeta) {
-    console.log(errorMeta);
+   
+    throw {
+      errorCode: 4,
+      message: "Meta Error",
+      error: errorMeta.message,
+    };
   }
 
   //   fill postData
@@ -58,9 +64,12 @@ const addPost = async (postLink, user) => {
     description: meta.description
       ? meta.description
       : "Lorem ipsum dolor sit amet",
-    image: meta.image ? meta.image : null,
+    image: meta.image ? meta.image : "Unavailable",
     source: meta.source ? meta.source : "Unavailable",
-    status: 0,
+    status: {
+      levelOne: 0,
+      levelTwo: 0,
+    },
   };
 
   let [post, errorPost] = await promiseHandler(
@@ -85,22 +94,22 @@ const addPost = async (postLink, user) => {
     role: post.requestedBy.role,
     email: post.requestedBy.email,
   };
-
   return { post };
 };
 
-const getPosts = async (clientParams, user) => {
+const getPosts = async ( user) => {
   let posts, errorPosts;
 
   // if admin return all posts
 
-  if (user.role === "Admin" || clientParams.all !== "false") {
+  if (user.role === "Admin") {
     [posts, errorPosts] = await promiseHandler(Post.find({}).sort({ _id: -1 }));
   } else {
     [posts, errorPosts] = await promiseHandler(
       Post.find({ requestedBy: user._id }).sort({ _id: -1 })
     );
   }
+
 
   if (errorPosts) {
     throw {
@@ -181,8 +190,13 @@ const getPost = async (id, user) => {
   return { post };
 };
 
-const approvePost = async (id, user) => {
+const validatePost = async (clientParameters, user) => {
   // check for admin
+
+  const {postId, statusCode} = clientParameters;
+
+
+
   if (user.role != "Admin") {
     throw {
       errorCode: 2,
@@ -192,7 +206,7 @@ const approvePost = async (id, user) => {
   }
 
   // get post
-  let [post, errorPost] = await promiseHandler(Post.findOne({ _id: id }));
+  let [post, errorPost] = await promiseHandler(Post.findOne({ _id: postId }));
 
   if (errorPost) {
     throw {
@@ -201,24 +215,27 @@ const approvePost = async (id, user) => {
       error: errorPost,
     };
   }
+  if(!post) {
+    throw {
+      errorCode: 1,
+      message: "Database Error: No post found",
+      error: errorPost,
+    };
+  }
 
   // check level and update
   try {
-    switch (post.status) {
-      case 0:
-        post.status = 1;
-        post.levelOne = mongoose.Types.ObjectId(user._id);
-        break;
-      case 1:
-        post.status = 2;
-        post.levelTwo = mongoose.Types.ObjectId(user._id);
-        break;
-      default:
-        break;
+    if (post.status.levelOne === 0) {
+      post.status.levelOne = statusCode;
+      post.levelOne = mongoose.Types.ObjectId(user._id);
+    } else if (post.status.levelOne !== -1 && post.status.levelTwo === 0) {
+      post.status.levelTwo = statusCode;
+      post.levelTwo = mongoose.Types.ObjectId(user._id);
     }
 
     post.save();
   } catch (error) {
+    console.log(error);
     throw {
       errorCode: 1,
       message: "Database Error: Unable to update post",
@@ -269,4 +286,4 @@ const approvePost = async (id, user) => {
   return { post };
 };
 
-module.exports = { addPost, getPosts, getPost, approvePost };
+module.exports = { addPost, getPosts, getPost, validatePost };
