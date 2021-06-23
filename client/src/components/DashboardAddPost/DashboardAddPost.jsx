@@ -20,13 +20,12 @@ const DashboardAddPost = ({ currentUser }) => {
     setFormMessage,
   ] = useForm({});
 
-  const [displayPost, setDisplayPost] = useState(false);
-  const [post, setPost] = useState({});
+  const [post, setPost] = useState(null);
 
   const onSubmit = async (e) => {
     e.preventDefault();
     clearError();
-    setPost({});
+    setPost(null);
     setFormMessage("");
 
     const [error, result] = await addPostApi(currentUser.token, value.postLink);
@@ -40,7 +39,6 @@ const DashboardAddPost = ({ currentUser }) => {
     } else {
       setFormMessage(result.info);
       setPost(result.content.post);
-      setDisplayPost(true);
       clearValue();
     }
   };
@@ -82,7 +80,7 @@ const DashboardAddPost = ({ currentUser }) => {
           </Form.Group>
         </Form>
       </div>
-      {displayPost ? <Post post={post} /> : null}
+      {post ? <Post post={post} /> : null}
     </div>
   );
 };

@@ -7,9 +7,30 @@ import { selectCurrentUser } from "../../redux/user/user.selectors";
 import { getPostsApi } from "../../api/apicall";
 import NotFound from "../NotFound/NotFound";
 import PostTableData from "../PostTableData/PostTableData";
+import socket from "../../socket/socket";
 
 const DashboardPosts = ({ currentUser }) => {
   const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    const refetch = async () => {
+      const [error, result] = await getPostsApi(currentUser.token);
+  
+      if (error) {
+        console.log(error);
+      } else {
+        setPosts(result.content.posts);
+      }
+    };
+
+    socket.on("posts", async (data) => {
+      console.log(data);
+      refetch();
+      // alert(data)
+    });
+
+  
+  },[currentUser]);
 
   useEffect(() => {
     const getPostsFromApi = async () => {
@@ -49,7 +70,6 @@ const DashboardPosts = ({ currentUser }) => {
                   status={status}
                 />
               ))}
-              
             </tbody>
           </Table>
         </>

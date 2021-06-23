@@ -21,6 +21,7 @@ const DashboardPost = ({ currentUser }) => {
     }
   };
 
+
   useEffect(() => {
     const getPostFromApi = async () => {
       const [error, result] = await getPostApi(

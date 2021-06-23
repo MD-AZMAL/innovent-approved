@@ -53,7 +53,7 @@ const Post = ({ post, currentUser, refresh }) => {
           />
         </div>
         <div className="post-card--right">
-          <a target="_blank" href={url} rel="noreferrer">
+          <a target="_blank" href={url} rel="noopener noreferrer">
             <h4 className="text-color-major mb-1">
               {title} <FaIcons.FaExternalLinkSquareAlt />
             </h4>
