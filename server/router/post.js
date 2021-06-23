@@ -87,7 +87,7 @@ router.post(
     let postLink = req.body.postLink;
 
     try {
-      const result = await addPost(postLink, req.user);
+      const result = await addPost(req.io, postLink, req.user);
 
       statusCode = 200;
       responseObject = {
@@ -121,7 +121,7 @@ router.post(
     let clientParameters = {...req.body, ...req.params}
 
     try {
-      const result = await validatePost(clientParameters, req.user);
+      const result = await validatePost(req.io,clientParameters, req.user);
 
       statusCode = 200;
       responseObject = {

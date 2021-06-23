@@ -4,7 +4,7 @@ const User = require("../models/User");
 const Post = require("../models/Post");
 const promiseHandler = require("../utils/promiseHandler");
 
-const addPost = async (postLink, user) => {
+const addPost = async (io, postLink, user) => {
   //   check existing user
   const [existingUser, errorExistingUser] = await promiseHandler(
     User.findById(user._id)
@@ -94,6 +94,9 @@ const addPost = async (postLink, user) => {
     role: post.requestedBy.role,
     email: post.requestedBy.email,
   };
+
+  io.emit("posts", "hello from backend");
+
   return { post };
 };
 
@@ -190,7 +193,7 @@ const getPost = async (id, user) => {
   return { post };
 };
 
-const validatePost = async (clientParameters, user) => {
+const validatePost = async (io, clientParameters, user) => {
   // check for admin
 
   const {postId, statusCode} = clientParameters;
@@ -283,6 +286,8 @@ const validatePost = async (clientParameters, user) => {
       }
     : null;
 
+  io.emit("posts", "hello from backend");
+    
   return { post };
 };
 
