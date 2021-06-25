@@ -45,11 +45,11 @@ const Post = ({ post, currentUser, refresh }) => {
           <Image
             src={
               image === "Unavailable"
-                ? "https://via.placeholder.com/250x200"
+                ? "https://via.placeholder.com/400x225"
                 : image
             }
-            width="250"
-            height="200"
+            width="400"
+            height="225"
           />
         </div>
         <div className="post-card--right">
