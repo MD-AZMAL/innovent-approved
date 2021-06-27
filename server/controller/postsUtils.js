@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const urlMetadata = require("url-metadata");
 const User = require("../models/User");
 const Post = require("../models/Post");
+const Api = require("../models/Api");
 const promiseHandler = require("../utils/promiseHandler");
 
 const addPost = async (io, postLink, user) => {
@@ -47,9 +48,7 @@ const addPost = async (io, postLink, user) => {
 
   const [meta, errorMeta] = await promiseHandler(urlMetadata(postLink));
 
-
   if (errorMeta) {
-   
     throw {
       errorCode: 4,
       message: "Meta Error",
@@ -100,19 +99,44 @@ const addPost = async (io, postLink, user) => {
   return { post };
 };
 
-const getPosts = async ( user) => {
+const getPosts = async (user, apiKey) => {
   let posts, errorPosts;
 
   // if admin return all posts
 
-  if (user.role === "Admin") {
+  if (apiKey) {
+    const [existingApiKey, errorExistingApiKey] = await promiseHandler(
+      Api.findOne({ apiKey: apiKey })
+    );
+
+    if (errorExistingApiKey) {
+      throw {
+        errorCode: 1,
+        message: "Database Error: Unable to query posts",
+        error: errorExistingApiKey.message,
+      };
+    }
+
+    if (!existingApiKey) {
+      throw {
+        errorCode: 2,
+        message: "invalid api key",
+        error: null,
+      };
+    }
+
     [posts, errorPosts] = await promiseHandler(Post.find({}).sort({ _id: -1 }));
   } else {
-    [posts, errorPosts] = await promiseHandler(
-      Post.find({ requestedBy: user._id }).sort({ _id: -1 })
-    );
+    if (user.role === "Admin") {
+      [posts, errorPosts] = await promiseHandler(
+        Post.find({}).sort({ _id: -1 })
+      );
+    } else {
+      [posts, errorPosts] = await promiseHandler(
+        Post.find({ requestedBy: user._id }).sort({ _id: -1 })
+      );
+    }
   }
-
 
   if (errorPosts) {
     throw {
@@ -125,14 +149,34 @@ const getPosts = async ( user) => {
   return { posts };
 };
 
-const getPost = async (id, user) => {
+const getPost = async (id, user, apiKey) => {
   // if admin return post info
   // if not admin show only post info if requested by user
 
   let post, errorPost;
 
   // if admin return  post
-  if (user.role === "Admin") {
+  if (apiKey) {
+    const [existingApiKey, errorExistingApiKey] = await promiseHandler(
+      Api.findOne({ apiKey: apiKey })
+    );
+
+    if (errorExistingApiKey) {
+      throw {
+        errorCode: 1,
+        message: "Database Error: Unable to query posts",
+        error: errorExistingApiKey.message,
+      };
+    }
+
+    if (!existingApiKey) {
+      throw {
+        errorCode: 2,
+        message: "invalid api key",
+        error: null,
+      };
+    }
+
     [post, errorPost] = await promiseHandler(
       Post.findOne({ _id: id })
         .populate("requestedBy")
@@ -140,14 +184,23 @@ const getPost = async (id, user) => {
         .populate("levelTwo")
     );
   } else {
-    // if user requested the post for approval return them
+    if (user.role === "Admin") {
+      [post, errorPost] = await promiseHandler(
+        Post.findOne({ _id: id })
+          .populate("requestedBy")
+          .populate("levelOne")
+          .populate("levelTwo")
+      );
+    } else {
+      // if user requested the post for approval return them
 
-    [post, errorPost] = await promiseHandler(
-      Post.findOne({ _id: id, requestedBy: user._id })
-        .populate("requestedBy")
-        .populate("levelOne")
-        .populate("levelTwo")
-    );
+      [post, errorPost] = await promiseHandler(
+        Post.findOne({ _id: id, requestedBy: user._id })
+          .populate("requestedBy")
+          .populate("levelOne")
+          .populate("levelTwo")
+      );
+    }
   }
 
   if (errorPost) {
@@ -196,9 +249,7 @@ const getPost = async (id, user) => {
 const validatePost = async (io, clientParameters, user) => {
   // check for admin
 
-  const {postId, statusCode} = clientParameters;
-
-
+  const { postId, statusCode } = clientParameters;
 
   if (user.role != "Admin") {
     throw {
@@ -218,7 +269,7 @@ const validatePost = async (io, clientParameters, user) => {
       error: errorPost,
     };
   }
-  if(!post) {
+  if (!post) {
     throw {
       errorCode: 1,
       message: "Database Error: No post found",
@@ -287,7 +338,7 @@ const validatePost = async (io, clientParameters, user) => {
     : null;
 
   io.emit("posts", "hello from backend");
-    
+
   return { post };
 };
 

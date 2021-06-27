@@ -4,10 +4,14 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const app = express();
-const server = require('http').createServer(app);
-const io = require('socket.io')(server, {cors: {origin: "*"}});
+const server = require("http").createServer(app);
+const io = require("socket.io")(server, { cors: { origin: "*" } });
 
-const routes = [require("./router/user"), require("./router/post")];
+const routes = [
+  require("./router/user"),
+  require("./router/post"),
+  require("./router/api"),
+];
 
 mongoose.connect(
   `mongodb://localhost:${process.env.dbPort}/${process.env.dbName}`,
@@ -35,6 +39,6 @@ server.listen(process.env.PORT || 8080, () => {
 
 //   socket.on("getPosts", (data)=> {
 //     console.log(`Data fron client ${data}`);
-    
+
 //   });
 // });
