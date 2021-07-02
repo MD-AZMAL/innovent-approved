@@ -24,6 +24,11 @@ const DashboardSidebar = ({ currentUser }) => {
       icon: <FaIcons.FaPlusSquare />,
       path: "/dashboard/add-post",
     },
+    {
+      title: "API Keys",
+      icon: <FaIcons.FaExternalLinkAlt />,
+      path: "/dashboard/api",
+    },
   ];
 
   return (

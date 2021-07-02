@@ -1,6 +1,7 @@
 import React from "react";
 import { Switch, useRouteMatch, Route, Redirect } from "react-router-dom";
 import DashboardAddPost from "../../components/DashboardAddPost/DashboardAddPost";
+import DashboardAPI from "../../components/DashboardAPI/DashboardAPI";
 import DashboardNav from "../../components/DashboardNav/DashboardNav";
 import DashboardPost from "../../components/DashboardPost/DashboardPost";
 import DashboardPosts from "../../components/DashboardPosts/DashboardPosts";
@@ -20,6 +21,7 @@ const DashboardPage = () => {
           <Switch>
             <Route exact path={path} render={() => <Redirect to={`${path}/posts`} />} />
             <Route exact path={`${path}/posts`} component={DashboardPosts} />
+            <Route exact path={`${path}/api`} component={DashboardAPI} />
             <Route
               exact
               path={`${path}/add-post`}

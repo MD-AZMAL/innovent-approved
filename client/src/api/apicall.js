@@ -160,3 +160,47 @@ export const verifyPostApi = async (token, postId, statusCode) => {
 
   return [error, data];
 };
+
+export const getApiKeysApi = async (token) => {
+  let data;
+  let error;
+
+  const requestObject = {
+    ...endpoints.getApiKeys,
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  };
+
+  try {
+    const result = await axios(requestObject);
+    data = result.data;
+  } catch (err) {
+    data = null;
+    error = err;
+  }
+
+  return [error, data];
+};
+
+export const generateApiKeyApi = async (token) => {
+  let data;
+  let error;
+
+  const requestObject = {
+    ...endpoints.generateApiKey,
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  };
+
+  try {
+    const result = await axios(requestObject);
+    data = result.data;
+  } catch (err) {
+    data = null;
+    error = err;
+  }
+
+  return [error, data];
+};

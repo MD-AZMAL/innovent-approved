@@ -25,6 +25,14 @@ const endpoints = {
     method: "POST",
     url: `${baseUrl}/api/v1/posts/:postId/validate`,
   },
+  getApiKeys: {
+    method: "GET",
+    url: `${baseUrl}/api/v1/apiKey`,
+  },
+  generateApiKey: {
+    method: "POST",
+    url: `${baseUrl}/api/v1/apiKey/generate`,
+  },
 };
 
 export default endpoints;
